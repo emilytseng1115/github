@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>?? 測試用簡易介面</title>
+  <style>
+    :root{
+      --bg:#f7f7fb;--card:#ffffff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;--primary:#2563eb;--primary-contrast:#fff;--danger:#ef4444;--ok:#10b981;
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220;--card:#0e182b;--text:#e5e7eb;--muted:#9ca3af;--border:#1f2a44;--primary:#60a5fa;--primary-contrast:#0b1220;--danger:#f87171;--ok:#34d399;
+    }
+    *{box-sizing:border-box}html,body{height:100%}
+    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,\"Noto Sans\",\"Apple Color Emoji\",\"Segoe UI Emoji\";background:var(--bg);color:var(--text)}
+    .container{max-width:980px;margin:24px auto;padding:0 16px}
+    .row{display:grid;gap:12px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px}
+    header h1{font-size:18px;margin:0}
+    .actions{display:flex;gap:8px;align-items:center}
+    button,.btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
+    .btn-primary{background:var(--primary);border-color:var(--primary);color:var(--primary-contrast)}
+    .btn-danger{background:var(--danger);border-color:var(--danger);color:#fff}
+    .btn-ghost{background:transparent}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:transparent;color:inherit}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left}
+    th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--border);font-size:12px;color:var(--muted)}
+    .ok{color:var(--ok);border-color:color-mix(in oklab, var(--ok) 60%, var(--border))}
+    .stack{display:flex;gap:8px;flex-wrap:wrap}
+    .footer{color:var(--muted);font-size:12px;text-align:center;margin:16px 0 24px}
+    /* Modal */
+    dialog{border:none;border-radius:16px;max-width:420px;width:92%;padding:0;background:var(--card);color:inherit}
+    dialog::backdrop{background:rgba(0,0,0,.3)}
+    .modal-body{padding:16px}
+    .modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--border)}
+    .toast{position:fixed;right:16px;bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.1);opacity:0;transform:translateY(10px);transition:.25s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+<div class="container row">
+  <header>
+    <h1>?? 測試用簡易介面</h1>
+    <div class="actions">
+      <span id="status" class="pill">就緒</span>
+      <button id="themeBtn" class="btn">?? 深淺主題</button>
+      <button id="resetBtn" class="btn btn-danger">清空資料</button>
+      <button id="logBtn" class="btn btn-ghost">Console 測試</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2 style="margin:0 0 8px 0">快速表單</h2>
+    <p style="margin:0 0 12px 0;color:var(--muted)">輸入假資料並新增到下方表格（純前端）。</p>
+    <div class="grid-3">
+      <div>
+        <label for="name">姓名</label>
+        <input id="name" placeholder="王小明" />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="test@example.com" />
+      </div>
+      <div>
+        <label for="role">角色</label>
+        <select id="role">
+          <option>學生</option>
+          <option>老師</option>
+          <option>管理員</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:12px">
+      <div>
+        <label for="note">備註</label>
+        <textarea id="note" rows="2" placeholder="隨便寫些東西用來測試…"></textarea>
+      </div>
+      <div>
+        <label for="progress">進度 (<span id="progressVal">0</span>%)</label>
+        <input id="progress" type="range" min="0" max="100" value="0" />
+        <div class="stack" style="margin-top:8px">
+          <button id="addBtn" class="btn-primary">新增到表格</button>
+          <button id="fakeBtn" class="btn">產生假資料</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0 0 8px 0">資料表格</h2>
+    <table id="dataTable" aria-label="資料表格">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>姓名</th>
+          <th>Email</th>
+          <th>角色</th>
+          <th>進度</th>
+          <th>備註</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <p class="footer">c <span id="year"></span> Demo ‧ 純前端、可離線使用</p>
+</div>
+
+<dialog id="confirmDialog" aria-labelledby="confirmTitle">
+  <div class="modal-body">
+    <h3 id="confirmTitle" style="margin:0 0 8px 0">確定要清空所有資料？</h3>
+    <p style="margin:0;color:var(--muted)">此操作無法復原。</p>
+  </div>
+  <div class="modal-footer">
+    <button id="cancelClear" class="btn">取消</button>
+    <button id="doClear" class="btn btn-danger">清空</button>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const body=document.body;
+  const themeBtn=document.getElementById('themeBtn');
+  const resetBtn=document.getElementById('resetBtn');
+  const logBtn=document.getElementById('logBtn');
+  const addBtn=document.getElementById('addBtn');
+  const fakeBtn=document.getElementById('fakeBtn');
+  const tableBody=document.querySelector('#dataTable tbody');
+  const nameEl=document.getElementById('name');
+  const emailEl=document.getElementById('email');
+  const roleEl=document.getElementById('role');
+  const noteEl=document.getElementById('note');
+  const progressEl=document.getElementById('progress');
+  const progressVal=document.getElementById('progressVal');
+  const statusEl=document.getElementById('status');
+  const yearEl=document.getElementById('year');
+  const dialog=document.getElementById('confirmDialog');
+  const cancelClear=document.getElementById('cancelClear');
+  const doClear=document.getElementById('doClear');
+  const toast=document.getElementById('toast');
+
+  let rows=[];
+  yearEl.textContent=new Date().getFullYear();
+
+  // theme toggle
+  themeBtn.addEventListener('click',()=>{
+    const dark = body.getAttribute('data-theme')==='dark';
+    body.setAttribute('data-theme', dark ? 'light' : 'dark');
+    showToast(dark? '已切換為淺色主題' : '已切換為深色主題');
+  });
+
+  // progress label sync
+  progressEl.addEventListener('input',()=>{
+    progressVal.textContent=progressEl.value;
+  });
+
+  // add row
+  addBtn.addEventListener('click',()=>{
+    const name=nameEl.value.trim();
+    const email=emailEl.value.trim();
+    const role=roleEl.value;
+    const note=noteEl.value.trim();
+    const progress=Number(progressEl.value||0);
+    if(!name || !email){
+      showToast('請至少填寫「姓名」與「Email」');
+      return;
+    }
+    rows.push({name,email,role,note,progress});
+    render();
+    clearForm();
+    showToast('已新增 1 筆資料');
+  });
+
+  // fake data
+  fakeBtn.addEventListener('click',()=>{
+    const fake=[
+      {name:'王小明',email:'ming@example.com',role:'學生',note:'第一次測試',progress:20},
+      {name:'林美麗',email:'mei@example.com',role:'老師',note:'第二次測試',progress:65},
+      {name:'張大同',email:'tom@example.com',role:'管理員',note:'第三次測試',progress:100}
+    ];
+    rows=rows.concat(fake);
+    render();
+    showToast('已產生假資料');
+  });
+
+  // reset all
+  resetBtn.addEventListener('click',()=>{
+    dialog.showModal();
+  });
+  cancelClear.addEventListener('click',()=>dialog.close());
+  doClear.addEventListener('click',()=>{
+    rows=[]; render(); dialog.close(); showToast('資料已清空');
+  });
+
+  // console test
+  logBtn.addEventListener('click',()=>{
+    console.group('?? 測試 Log');
+    console.log('目前筆數:', rows.length);
+    console.table(rows);
+    console.groupEnd();
+    statusEl.textContent='已輸出到 Console';
+    setTimeout(()=>statusEl.textContent='就緒',1500);
+    showToast('已輸出到 Console (F12 查看)');
+  });
+
+  // render table
+  function render(){
+    tableBody.innerHTML='';
+    rows.forEach((r,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td>${i+1}</td>
+        <td>${esc(r.name)}</td>
+        <td>${esc(r.email)}</td>
+        <td><span class="pill">${esc(r.role)}</span></td>
+        <td><span class="pill ok">${r.progress}%</span></td>
+        <td>${esc(r.note)}</td>
+        <td><button class="btn btn-ghost" data-del="${i}">刪除</button></td>`;
+      tableBody.appendChild(tr);
+    });
+    // bind delete
+    tableBody.querySelectorAll('button[data-del]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const idx=Number(btn.getAttribute('data-del'));
+        rows.splice(idx,1); render(); showToast('已刪除 1 筆');
+      });
+    });
+  }
+  function clearForm(){
+    nameEl.value=''; emailEl.value=''; roleEl.value='學生'; noteEl.value=''; progressEl.value=0; progressVal.textContent='0';
+  }
+  function showToast(msg){
+    toast.textContent=msg; toast.classList.add('show');
+    clearTimeout(showToast._t); showToast._t=setTimeout(()=>toast.classList.remove('show'),1600);
+  }
+  function esc(s){return (s||'').replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",
+    ">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+
+  // init theme from prefers-color-scheme
+  const prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+})();
+</script>
+</body>
+</html>
